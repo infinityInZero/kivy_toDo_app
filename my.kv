@@ -1,0 +1,90 @@
+#:import FlashTransition kivy.uix.screenmanager.FadeTransition
+
+Interface:
+    transition: FlashTransition()
+    Screen:
+        name: 'screen1'
+        BoxLayout:
+            padding: dp(20)
+            spacing: dp(20)
+            orientation: 'vertical'
+            Label:
+                text: "[size=30][color=#87CEEB][b]To-Do [/b][/color] App[/size]"
+                size_hint: 1, 0.1
+                markup: True
+
+            ScrollView:
+                size_hint: 1, 0.8
+                BoxLayout:
+                    id: taskList
+                    orientation: 'vertical'
+                    size_hint: 1, None
+                    height: self.minimum_height
+                    spacing: dp(5)
+                    padding: dp(10)
+  
+            Button:
+                size_hint: 1, 0.1
+                text: 'Add task'
+                on_press: root.open_popup()
+
+    Screen:
+        name: 'screen2'
+        BoxLayout:
+            spacing: dp(20)
+            padding: dp(20)
+            orientation: 'vertical'
+            Label:
+                id: screen2Title
+                text: 'screen2'
+                size_hint: 1, None
+                text_size: self.width, None
+                height: self.texture_size[1]
+            TextInput:
+                id: taskDetails
+                size_hint: 1, 0.7
+                hint_text: 'Enter task details'
+            Button:
+                size_hint: 1, 0.1
+                text: 'Submit'
+                on_press: root.toScreen1(screen2Title.text, taskDetails.text)
+
+<CustomBtn>:
+    key_text: 'key1'
+
+<Task>:
+    size_hint: 1, None
+    height: self.minimum_height
+    spacing: dp(5)
+    id: taskId
+    CustomBtn:
+        id: title
+        size_hint: 0.85, None
+        height: dp(40)
+        text: 'task 1'
+        on_press: root.toScreen2(self.key_text)
+        background_color: (.95, .61, .45, 1)
+    Button:
+        size_hint: 0.15, None
+        height: dp(40)
+        background_color: (1, 0, 0, 1)
+        text: 'Del'
+        on_press: root.delete_task(title, taskId)
+
+
+<CustomPopup>:
+    id: taskTitle
+    title: 'Task title'
+    size_hint: 0.8, .2
+    BoxLayout:
+        orientation: 'vertical'
+        TextInput:
+            id: taskInput
+            multiline: False
+            hint_text: 'Task details'
+            size_hint: 1, 0.5
+        Button:
+            size_hint: 1, 0.5
+            text: 'Add'
+            on_press: root.add_task(taskInput.text)
+
